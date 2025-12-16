@@ -191,8 +191,28 @@ NEXT_PUBLIC_API_URL=http://localhost:8000
 
 ## 🚀 Deployment
 
-Backend can be deployed to: Render, Railway, or Heroku
-Frontend can be deployed to: Vercel, Netlify, or Cloudflare Pages
+### Backend (Render)
+1. Create new Web Service on [Render](https://render.com)
+2. Connect your GitHub repository
+3. Configure:
+   - **Root Directory**: `backend`
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port 8000`
+4. Add Environment Variable: `GEMINI_API_KEY`
+5. Deploy
+
+### Frontend (Vercel)
+1. Import project on [Vercel](https://vercel.com)
+2. Configure:
+   - **Root Directory**: `frontend`
+   - **Framework Preset**: Next.js
+3. Add Environment Variable: `NEXT_PUBLIC_API_URL` (your Render backend URL)
+4. Deploy
+
+### Post-Deployment
+- Test `/health` endpoint to verify backend is running
+- Visit `/docs` for interactive API documentation
+- Update frontend environment variable with deployed backend URL
 
 ---
 

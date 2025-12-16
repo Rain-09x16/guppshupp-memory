@@ -27,7 +27,28 @@ generation_config = {
 
 model = genai.GenerativeModel("models/gemini-flash-latest")
 
-app = FastAPI()
+app = FastAPI(
+    title="GUPPSHUPP Memory AI API",
+    description="API for extracting user memories and generating personality-aware responses",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
+
+@app.get("/")
+def root():
+    return {
+        "message": "GUPPSHUPP Memory AI API",
+        "endpoints": {
+            "docs": "/docs",
+            "extract_memory": "/extract_memory",
+            "transform_personality": "/transform_personality"
+        }
+    }
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "service": "GUPPSHUPP Memory AI"}
 
 # cors
 app.add_middleware(
@@ -100,7 +121,10 @@ def transform_personality(request: PersonalityTransformRequest):
         response = model.generate_content(
             prompt,
             safety_settings=safety_settings,
-            generation_config={"temperature": 0.8}
+            generation_config={
+                "temperature": 0.8,
+                "max_output_tokens": 150 
+            }
         )
         return PersonalityTransformResponse(response=response.text)
         
@@ -109,9 +133,9 @@ def transform_personality(request: PersonalityTransformRequest):
         print("SWITCHING TO MOCK DATA FOR PERSONALITY")
 
         mock_responses = {
-            "calm_mentor": "I understand that work is stressful right now. Remember to take small breaks. How can I help you prioritize?",
-            "witty_friend": "Pizza is life! 🍕 Don't let the cybersecurity bugs bite. You got this!",
-            "therapist": "It sounds like you need some comfort food. It is okay to prioritize self-care when things are tough."
+            "calm_mentor": "I hear you're navigating some challenges in cybersecurity work, and that can be demanding. Given that Mondays tend to be particularly stressful for you, what small step could you take this week to ease into the workweek more gently?",
+            "witty_friend": "Yo, cybersecurity life hitting different this week? At least you got Luna and pizza to keep you sane lol. For real though, take care of yourself between those bug hunts! ",
+            "therapist": "It sounds like you're feeling the weight of work stress, especially as someone who experiences heightened pressure on Mondays. That's completely valid, and your instinct to seek comfort—whether through pizza or time with Luna—shows you're already listening to what you need."
         }
         
         return PersonalityTransformResponse(
