@@ -1,4 +1,4 @@
-# GUPPSHUPP Memory AI - Founding AI Engineer Assignment
+# GUPPSHUPP Memory AI
 
 A companion AI system that extracts user memories from conversations and generates personality-aware responses.
 
